@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include "game.h"
 #include "environment.h"
+#include "constants.h"
 
 void    Game_Init(GameState *game)
 {	
@@ -80,17 +81,14 @@ void    Game_ToggleSimulation(GameState *game)
 
 void	Game_ToggleCell(GameState *game, int x, int y)
 {
-	int remap_x, remap_y;
-	Environment_RemapIndex(&game->environment, x, y, &remap_x, &remap_y);
-
-	int cell_state = Environment_GetCellState(&game->environment, remap_x, remap_y, 0);
+	int cell_state = Environment_GetCellState(&game->environment, x, y, 1);
 
 	if (
 		(game->editor.mode == GAME_EDITOR_MODE_REMOVE && cell_state == 0) || 
 		(game->editor.mode == GAME_EDITOR_MODE_ADD && cell_state == 1))
 		return;
 
-	Environment_ToggleCell(&game->environment, remap_x, remap_y, 0);
+	Environment_ToggleCell(&game->environment, x, y, 1);
 }
 
 

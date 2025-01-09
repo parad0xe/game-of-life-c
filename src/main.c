@@ -63,7 +63,7 @@ int	main()
 						Game_SwitchEditorMode(&game);
 					else if (event.key.keysym.sym == SDLK_r)
 						Game_Reset(&game);
-					else if (event.key.keysym.sym == SDLK_n)
+					else if (event.key.keysym.sym == SDLK_n && !game.is_simulating)
 						Game_RunStep(&game);
 
 

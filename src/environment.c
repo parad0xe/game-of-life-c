@@ -45,6 +45,21 @@ void	Environment_Flush(SDL_Surface *surface, Environment *environment)
 		}
 }
 
+void	Environment_RunStep(Environment *environment)
+{
+	int	*next_state = Environment_CreateState();
+
+	for(int y = 0; y < W_ROWS; y++)
+		for(int x = 0; x < W_COLS; x++)
+			next_state[x + y * W_COLS] = Environment_CheckCellIsAlive(environment, x, y);
+	
+	for(int y = 0; y < W_ROWS; y++)
+		for(int x = 0; x < W_COLS; x++)
+			environment->state[x + y * W_COLS] = next_state[x + y * W_COLS];
+	
+	free(next_state);
+}
+
 void	Environment_Free(Environment *environment)
 {
 	if (environment->state != NULL)
@@ -110,21 +125,6 @@ _Bool	Environment_CheckCellIsAlive(Environment *environment, int x, int y)
 	else if (cell_state == 0 && alive_around == RULE_DEAD_TO_ALIVE_REQUIRES_ALIVE)
 		return 1;
 	return 0;
-}
-
-void	Environment_RunStep(Environment *environment)
-{
-	int	*next_state = Environment_CreateState();
-
-	for(int y = 0; y < W_ROWS; y++)
-		for(int x = 0; x < W_COLS; x++)
-			next_state[x + y * W_COLS] = Environment_CheckCellIsAlive(environment, x, y);
-	
-	for(int y = 0; y < W_ROWS; y++)
-		for(int x = 0; x < W_COLS; x++)
-			environment->state[x + y * W_COLS] = next_state[x + y * W_COLS];
-	
-	free(next_state);
 }
 
 void	Environment_RemapIndex(Environment *environment, int x, int y, int *out_x, int *out_y)
